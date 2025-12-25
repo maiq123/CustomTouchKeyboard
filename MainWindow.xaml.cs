@@ -27,6 +27,7 @@ public partial class MainWindow : Window {
     private readonly System.Windows.Media.Brush _activeBrush = System.Windows.Media.Brushes.DarkRed;
     private readonly System.Windows.Media.Brush _defaultBrush = 
         (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#444444")!;
+    private readonly HashSet<VirtualKeyCode> _lockedKeys = new();
     
     // Win32 Constants
     private const int GWL_EXSTYLE = -20;
@@ -51,42 +52,70 @@ public partial class MainWindow : Window {
     }
 
     // Handles Shift, Ctrl, Alt, H, G
+    // private void OnKeyDown(object sender, InputEventArgs e)
+    // {
+    //     if (sender is Button btn)
+    //     {
+    //         // Change color immediately
+    //         btn.Background = _activeBrush;
+    //
+    //         if (btn.Tag is string keyName && Enum.TryParse(keyName, out VirtualKeyCode code))
+    //         {
+    //             _sim.Keyboard.KeyDown(code);
+    //         }
+    //
+    //         // Capture logic to prevent "stuck" keys
+    //         if (e is TouchEventArgs te) te.TouchDevice.Capture(btn);
+    //         else if (e is MouseEventArgs me) Mouse.Capture(btn);
+    //     
+    //         e.Handled = true;
+    //     }
+    // }
+    //
+    // private void OnKeyUp(object sender, InputEventArgs e)
+    // {
+    //     if (sender is Button btn)
+    //     {
+    //         // Revert color
+    //         btn.Background = _defaultBrush;
+    //
+    //         if (btn.Tag is string keyName && Enum.TryParse(keyName, out VirtualKeyCode code))
+    //         {
+    //             _sim.Keyboard.KeyUp(code);
+    //         }
+    //
+    //         // Release capture
+    //         if (e is TouchEventArgs te) te.TouchDevice.Capture(null);
+    //         else if (e is MouseEventArgs me) Mouse.Capture(null);
+    //     
+    //         e.Handled = true;
+    //     }
+    // }
+    
     private void OnKeyDown(object sender, InputEventArgs e)
     {
-        if (sender is Button btn)
+        if (sender is Button btn && btn.Tag is string keyName)
         {
-            // Change color immediately
-            btn.Background = _activeBrush;
-
-            if (btn.Tag is string keyName && Enum.TryParse(keyName, out VirtualKeyCode code))
+            if (Enum.TryParse(keyName, out VirtualKeyCode code))
             {
-                _sim.Keyboard.KeyDown(code);
+                if (!_lockedKeys.Contains(code))
+                {
+                    // KEY DOWN (Lock it)
+                    _sim.Keyboard.KeyDown(code);
+                    _lockedKeys.Add(code);
+                    btn.Background = System.Windows.Media.Brushes.DarkRed;
+                    btn.BorderBrush = System.Windows.Media.Brushes.Gold; // Visual indicator it's locked
+                    btn.BorderThickness = new Thickness(3);
+                }
+                else
+                {
+                    // KEY UP (Release it)
+                    _sim.Keyboard.KeyUp(code);
+                    _lockedKeys.Remove(code);
+                    btn.Background = _defaultBrush;
+                    btn.BorderThickness = new Thickness(1);
+                }
             }
-
-            // Capture logic to prevent "stuck" keys
-            if (e is TouchEventArgs te) te.TouchDevice.Capture(btn);
-            else if (e is MouseEventArgs me) Mouse.Capture(btn);
-        
-            e.Handled = true;
-        }
-    }
-
-    private void OnKeyUp(object sender, InputEventArgs e)
-    {
-        if (sender is Button btn)
-        {
-            // Revert color
-            btn.Background = _defaultBrush;
-
-            if (btn.Tag is string keyName && Enum.TryParse(keyName, out VirtualKeyCode code))
-            {
-                _sim.Keyboard.KeyUp(code);
-            }
-
-            // Release capture
-            if (e is TouchEventArgs te) te.TouchDevice.Capture(null);
-            else if (e is MouseEventArgs me) Mouse.Capture(null);
-        
             e.Handled = true;
         }
     }
@@ -94,16 +123,18 @@ public partial class MainWindow : Window {
     // Handles combinations like Shift+Alt
     private void OnComboDown(object sender, InputEventArgs e)
     {
+        var btn = (Button)sender;
+        btn.Background = _activeBrush;
         _sim.Keyboard.KeyDown(VirtualKeyCode.SHIFT);
-        _sim.Keyboard.KeyDown(VirtualKeyCode.MENU); // MENU = Alt
-        ((Button)sender).Background = System.Windows.Media.Brushes.DarkRed;
+        _sim.Keyboard.KeyDown(VirtualKeyCode.MENU); // Alt
     }
 
     private void OnComboUp(object sender, InputEventArgs e)
     {
+        var btn = (Button)sender;
+        btn.Background = _defaultBrush;
         _sim.Keyboard.KeyUp(VirtualKeyCode.SHIFT);
         _sim.Keyboard.KeyUp(VirtualKeyCode.MENU);
-        ((Button)sender).Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#444444")!;
     }
 
     // Allows moving the window by dragging the background

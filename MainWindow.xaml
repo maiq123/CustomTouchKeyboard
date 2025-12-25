@@ -25,25 +25,49 @@
                         </Setter>
                 </Style>
         </Window.Resources>
+    <!-- <UniformGrid Columns="2" Rows="4" Margin="5"> -->
+    <!--     <Button Content="Shift" Tag="SHIFT" Style="{StaticResource KeyStyle}"  -->
+    <!--             PreviewTouchDown="OnKeyDown"  -->
+    <!--             PreviewMouseDown="OnKeyDown" /> -->
+    <!--     <Button Content="Ctrl" Tag="CONTROL" Style="{StaticResource KeyStyle}" -->
+    <!--             PreviewTouchDown="OnKeyDown"  -->
+    <!--             PreviewMouseDown="OnKeyDown" /> -->
+    <!--     <Button Content="Alt" Tag="MENU" Style="{StaticResource KeyStyle}" -->
+    <!--             PreviewTouchDown="OnKeyDown"  -->
+    <!--             PreviewMouseDown="OnKeyDown" /> -->
+    <!--      -->
+    <!--     <Button Content="Shf+Alt" Style="{StaticResource KeyStyle}" -->
+    <!--             PreviewTouchDown="OnComboDown" PreviewTouchUp="OnComboUp" -->
+    <!--             PreviewMouseDown="OnComboDown" PreviewMouseUp="OnComboUp"/> -->
+    <!--      -->
+    <!--     <Button Content="H" Tag="VK_H" Style="{StaticResource KeyStyle}" -->
+    <!--             PreviewTouchDown="OnKeyDown"  -->
+    <!--             PreviewMouseDown="OnKeyDown" /> -->
+    <!--     <Button Content="G" Tag="VK_G" Style="{StaticResource KeyStyle}" -->
+    <!--             PreviewTouchDown="OnKeyDown"  -->
+    <!--             PreviewMouseDown="OnKeyDown" /> -->
+    <!-- </UniformGrid> -->
     <UniformGrid Columns="2" Rows="4" Margin="5">
-        <Button Content="Shift" Tag="SHIFT" Style="{StaticResource KeyStyle}" 
-                PreviewTouchDown="OnKeyDown" PreviewTouchUp="OnKeyUp"
-                PreviewMouseDown="OnKeyDown" PreviewMouseUp="OnKeyUp"/>
-        <Button Content="Ctrl" Tag="CONTROL" Style="{StaticResource KeyStyle}"
-                PreviewTouchDown="OnKeyDown" PreviewTouchUp="OnKeyUp"
-                PreviewMouseDown="OnKeyDown" PreviewMouseUp="OnKeyUp"/>
-        <Button Content="Alt" Tag="MENU" Style="{StaticResource KeyStyle}"
-                PreviewTouchDown="OnKeyDown" PreviewTouchUp="OnKeyUp"
-                PreviewMouseDown="OnKeyDown" PreviewMouseUp="OnKeyUp"/>
+            <Button Content="Shift" Tag="SHIFT" Style="{StaticResource KeyStyle}" 
+                    PreviewTouchDown="OnKeyDown" 
+                    PreviewMouseDown="OnKeyDown" />
+            <Button Content="Ctrl" Tag="CONTROL" Style="{StaticResource KeyStyle}"
+                    PreviewTouchDown="OnKeyDown" 
+                    PreviewMouseDown="OnKeyDown" />
+            <Button Content="Alt" Tag="MENU" Style="{StaticResource KeyStyle}"
+                    PreviewTouchDown="OnKeyDown" 
+                    PreviewMouseDown="OnKeyDown" />
         
-        <Button Content="Shf+Alt" Style="{StaticResource KeyStyle}"
-                PreviewTouchDown="OnComboDown" PreviewTouchUp="OnComboUp"
-                PreviewMouseDown="OnComboDown" PreviewMouseUp="OnComboUp"/>
+            <Button Content="Shf+Alt" Style="{StaticResource KeyStyle}"
+                    PreviewTouchDown="OnComboDown" PreviewTouchUp="OnComboUp"
+                    PreviewMouseDown="OnComboDown" PreviewMouseUp="OnComboUp"/>
         
-        <Button Content="H" Tag="VK_H" Style="{StaticResource KeyStyle}"
-                PreviewTouchDown="OnKeyDown" PreviewTouchUp="OnKeyUp"/>
-        <Button Content="G" Tag="VK_G" Style="{StaticResource KeyStyle}"
-                PreviewTouchDown="OnKeyDown" PreviewTouchUp="OnKeyUp"
-                PreviewMouseDown="OnKeyDown" PreviewMouseUp="OnKeyUp"/>
+            <Button Content="H" Tag="VK_H" Style="{StaticResource KeyStyle}"
+                    PreviewTouchDown="OnKeyDown" 
+                    PreviewMouseDown="OnKeyDown" />
+            <Button Content="G" Tag="VK_G" Style="{StaticResource KeyStyle}"
+                    PreviewTouchDown="OnKeyDown" 
+                    PreviewMouseDown="OnKeyDown" />
     </UniformGrid>
+        
 </Window>

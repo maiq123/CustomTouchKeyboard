@@ -11,6 +11,18 @@
                         <Setter Property="Margin" Value="2"/>
                         <Setter Property="FontSize" Value="14"/>
                         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/> 
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" 
+                                                        BorderBrush="Black" 
+                                                        BorderThickness="1" 
+                                                        CornerRadius="3">
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
                 </Style>
         </Window.Resources>
     <UniformGrid Columns="2" Rows="4" Margin="5">

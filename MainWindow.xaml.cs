@@ -23,6 +23,11 @@ public partial class MainWindow : Window {
     
     private readonly InputSimulator _sim = new();
     
+    // Define these once at the top of your class
+    private readonly System.Windows.Media.Brush _activeBrush = System.Windows.Media.Brushes.DarkRed;
+    private readonly System.Windows.Media.Brush _defaultBrush = 
+        (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#444444")!;
+    
     // Win32 Constants
     private const int GWL_EXSTYLE = -20;
     private const int WS_EX_NOACTIVATE = 0x08000000;
@@ -48,28 +53,41 @@ public partial class MainWindow : Window {
     // Handles Shift, Ctrl, Alt, H, G
     private void OnKeyDown(object sender, InputEventArgs e)
     {
-        if (sender is Button btn && btn.Tag is string keyName)
+        if (sender is Button btn)
         {
-            // Capture touch to ensure release even if finger slides away
+            // Change color immediately
+            btn.Background = _activeBrush;
+
+            if (btn.Tag is string keyName && Enum.TryParse(keyName, out VirtualKeyCode code))
+            {
+                _sim.Keyboard.KeyDown(code);
+            }
+
+            // Capture logic to prevent "stuck" keys
             if (e is TouchEventArgs te) te.TouchDevice.Capture(btn);
             else if (e is MouseEventArgs me) Mouse.Capture(btn);
-            
-            VirtualKeyCode code = (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), keyName);
-            _sim.Keyboard.KeyDown(code);
-            btn.Background = System.Windows.Media.Brushes.DarkRed;
+        
+            e.Handled = true;
         }
     }
 
     private void OnKeyUp(object sender, InputEventArgs e)
     {
-        if (sender is Button btn && btn.Tag is string keyName)
+        if (sender is Button btn)
         {
+            // Revert color
+            btn.Background = _defaultBrush;
+
+            if (btn.Tag is string keyName && Enum.TryParse(keyName, out VirtualKeyCode code))
+            {
+                _sim.Keyboard.KeyUp(code);
+            }
+
+            // Release capture
             if (e is TouchEventArgs te) te.TouchDevice.Capture(null);
             else if (e is MouseEventArgs me) Mouse.Capture(null);
-            
-            VirtualKeyCode code = (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), keyName);
-            _sim.Keyboard.KeyUp(code);
-            btn.Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#444444")!;
+        
+            e.Handled = true;
         }
     }
 
